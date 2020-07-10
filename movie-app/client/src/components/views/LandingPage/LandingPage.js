@@ -3,6 +3,7 @@ import {API_URL, API_KEY, IMAGE_URL} from '../../Config';
 
 import {Typography, Row} from 'antd';
 import MainImage from './Sections/MainImage';
+import GridCard from './Sections/GridCard';
 const {Title} = Typography;
 
 function LandingPage() {
@@ -36,7 +37,12 @@ function LandingPage() {
 
                 {/* Grid Card Template */}
                 <Row guttter={[16,16]}>
-
+                    {Movies && Movies.map((movie,index)=> (
+                        <React.Fragment key={index}>
+                            <GridCard image={movie.poster_path && `${IMAGE_URL}w500${movie.poster_path}`} 
+                                      movieId={movie.id} />
+                        </React.Fragment>
+                    ))}
                 </Row>
 
                 {/* Load More Button */}
