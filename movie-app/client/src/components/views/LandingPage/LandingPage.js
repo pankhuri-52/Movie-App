@@ -1,18 +1,19 @@
 import React, { useEffect, useState} from 'react';
 import {API_URL, API_KEY} from '../../Config';
 
-import {Typography} from 'antd';
+import {Typography, Row} from 'antd';
 const {Title} = Typography;
 
 function LandingPage() {
 
-    //const [state, setState] = useState(initialState);
+    const [Movies, setMovies] = useState([]);
 
     useEffect(() => {
         fetch(`${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`)
             .then(response => response.json())
             .then(response => {
-                console.log(response);
+                setMovies(response.results);
+                //console.log(response);
             })
     }, [])
 
@@ -39,6 +40,23 @@ function LandingPage() {
                     </Title>
 
                     <p style={{color : 'white', fontSize : '1rem'}}>text</p>
+                </div>
+            </div>
+
+            {/* Body */}
+            <div style={{width : '85%', margin : '1rem auto'}}>
+                <Title level={2}>Movies by latest</Title>
+                 <hr />
+
+                {/* Grid Card Template */}
+                <Row guttter={[16,16]}>
+
+                </Row>
+
+                {/* Load More Button */}
+                <br />
+                <div style={{display : 'flex', justifyContent:'center'}}>
+                    <button onClick>Load More</button>
                 </div>
             </div>
 
