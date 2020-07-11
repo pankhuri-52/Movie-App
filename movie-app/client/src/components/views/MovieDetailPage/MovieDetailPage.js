@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {API_URL, API_KEY} from '../../Config'; 
 
 function MovieDetailPage(props) {
+
+    const [Movie, setMovie] = useState([]);
 
     useEffect(() => {
 
@@ -11,6 +13,7 @@ function MovieDetailPage(props) {
             .then(response => response.json())
             .then(response => {
                 console.log(response);
+                setMovie(response);
             })
 
     },[])
