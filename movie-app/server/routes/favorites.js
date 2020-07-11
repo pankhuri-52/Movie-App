@@ -15,7 +15,7 @@ router.post("/favoriteNumber", auth, (req, res) => {
         .exec((err, favorite) => {
             if(err) return res.status(400).send(err)
 
-            res.status(200).json({success : true, FavoriteNumber : favorite.length }) // how many ppl added movies to favorites
+            res.status(200).json({success : true, favoriteNumber : favorite.length }) // how many ppl added movies to favorites
         })
 });
 

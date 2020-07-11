@@ -37,7 +37,7 @@ function Favorite(props) {
 
     return (
         <div>
-            <button>Add to Favorite</button>
+            <button>{Favorited ? "remove from favorite" : "Add to Favorite"} {FavoriteNumber}</button>
         </div>
     )
 }
