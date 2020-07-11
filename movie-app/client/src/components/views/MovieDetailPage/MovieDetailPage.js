@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import {API_URL, API_KEY, IMAGE_URL} from '../../Config'; 
 import MainImage from '../LandingPage/Sections/MainImage';
-import { Descriptions, Button } from 'antd';
+import { Descriptions, Button, Row } from 'antd';
+import GridCard from '../LandingPage/Sections/GridCard';
 
 function MovieDetailPage(props) {
 
     const [Movie, setMovie] = useState([]);
+    const [Crews, setCrews] = useState([]);
+    const [ActorToggle, setActorToggle] = useState(false);
 
     useEffect(() => {
 
@@ -16,9 +19,21 @@ function MovieDetailPage(props) {
             .then(response => {
                 console.log(response);
                 setMovie(response);
-            })
+
+                /* Crews Information */
+                fetch(`${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`)
+                    .then(response => response.json())
+                    .then(response => {
+                        console.log(response);
+                        setCrews(response.cast);
+                    })
+            });
 
     },[])
+
+    const handleClick = () => {
+        setActorToggle(!ActorToggle)
+    }
 
     return (
         <div>
@@ -49,9 +64,26 @@ function MovieDetailPage(props) {
                 </Descriptions>
 
                 {/* Toggle Button */}
-                <div style={{display:'flex' , justifyContent:'center', padding: '10px'}}>
-                    <Button>Toggle Actor View</Button>
+                <br/><br/>
+                <div style={{display:'flex' , justifyContent:'center'}}>
+                    <Button onClick={handleClick}>Toggle Actor View</Button>
                 </div>
+
+                {/* Grid Cards for Crews */}
+                {
+                    ActorToggle && 
+                    <Row guttter={[16,16]}>
+                        {Crews && Crews.map((crew,index)=> (
+                            <React.Fragment key={index}>
+
+                                {
+                                    crew.profile_path && <GridCard actor image={`${IMAGE_URL}w500${crew.profile_path}`} />
+                                }
+                
+                            </React.Fragment>
+                        ))}
+                    </Row>
+                }
 
             </div>
 
