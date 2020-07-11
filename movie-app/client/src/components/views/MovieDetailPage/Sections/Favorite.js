@@ -4,6 +4,7 @@ import axios from 'axios';
 function Favorite(props) {
 
     const [FavoriteNumber, setFavoriteNumber] = useState(0);
+    const [Favorited, setFavorited] = useState(false);
 
     useEffect(() => {
 
@@ -24,6 +25,14 @@ function Favorite(props) {
                 }
             })
 
+        axios.post('/api/favorite/favorited',variable)
+            .then(response => {
+                if(response.data.success) {
+                    setFavorited(response.data.favorited);
+                } else {
+                    alert('Failed to get Favorite Info');
+                }
+            })
     },[])
 
     return (

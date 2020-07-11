@@ -19,4 +19,22 @@ router.post("/favoriteNumber", auth, (req, res) => {
         })
 });
 
+router.post("/favorited", auth, (req, res) => {
+   
+    //Find favorite Information in the favorite collection by movieId and userFrom
+    Favorite.find({"movieId" : req.body.movieId, "userFrom" : req.body.userFrom})
+        .exec((err, favorite) => {
+            if(err) return res.status(400).send(err)
+
+            // How can we know if I already favorite this movie or not
+            let result = false;
+            if(favorite.length !== 0) {
+                result = true;
+            }
+
+            res.status(200).json({ success : true, favorited : result});
+        })
+
+});
+
 module.exports = router;
