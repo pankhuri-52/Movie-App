@@ -11,15 +11,36 @@ function FavoritePage() {
     const [FavoritedMovies, setFavoritedMovies] = useState([]);
 
     useEffect(() => {
-        Axios.post('/api/favorite/getFavoritedMovie',variables)
-            .then(response => {
-                if(response.data.success){
-                    setFavoritedMovies(response.data.favorites);
-                } else {
-                    alert('Failed to get Favorited Video');
-                }
-            })
+        fetchFavoritedMovies();
     },[])
+
+    const fetchFavoritedMovies = () => {
+        Axios.post('/api/favorite/getFavoritedMovie',variables)
+        .then(response => {
+            if(response.data.success){
+                setFavoritedMovies(response.data.favorites);
+            } else {
+                alert('Failed to get Favorited Video');
+            }
+        })
+    }
+
+    const onClickRemove = (movieId) => {
+
+        const variable = {
+            movieId: movieId,
+            userFrom: localStorage.getItem('userId')
+        }
+
+        Axios.post('/api/favorite/removeFromFavorite',variable)
+        .then(response => {
+            if(response.data.success) {
+                fetchFavoritedMovies();  
+            } else {
+                alert('Failed to remove from Favorites');
+            }
+        })
+    }
 
     const renderTableBody = FavoritedMovies.map((movie,index) => {
 
@@ -28,7 +49,7 @@ function FavoritePage() {
                 {
                     movie.moviePost ? 
                     <img src={`${IMAGE_URL}w500${movie.moviePost}`} alt="moviePost" />
-                    : <img src={`${IMAGE_URL}w500${movie.moviePost}`} alt="moviePost" />
+                    : "No Image"
                 }
             </div>
     )
@@ -39,7 +60,7 @@ function FavoritePage() {
             <td>{movie.movieTitle}</td>
             </Popover>
             <td>{movie.movieRunTime}</td>
-            <td><button>Remove from the Favorites</button></td>
+            <td><button onClick={() => onClickRemove(movie.movieId)}>Remove from the Favorites</button></td>
         </tr>
         )
     })
